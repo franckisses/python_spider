@@ -4,7 +4,7 @@ import random
 from urllib import request
 import os,re
 
-# 创建一个ua池
+# 创建一个UA池
 useragentlist = [
 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.71 Safari/537.1 LBBROWSER',
 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)',
@@ -44,7 +44,7 @@ def parse_page(url):
         # 拿到表情包的名称
         alt = img.get("alt")
         # 将表情包的名称中的一些特殊符号用正则替换
-        alt=re.sub(r"[\？\?！!，,\.:~\d\\]","",alt)
+        alt = re.sub(r"[\？\?！!，,\.:~\d\\]","",alt)
         # 将拿到的链接进行分割,并且拿到图片的后缀
         suffix = os.path.splitext(img_url)[-1]
         # 拼接表情包的名字
