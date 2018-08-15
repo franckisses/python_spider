@@ -1,3 +1,7 @@
+"""
+爬取猫眼电影的榜单前一百
+"""
+
 import requests,re,json,random,time
 from requests.exceptions import RequestException
 from multiprocessing import Pool
