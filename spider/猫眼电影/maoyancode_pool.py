@@ -3,6 +3,7 @@ from requests.exceptions import RequestException
 from multiprocessing import Pool
 from multiprocessing import Manager
 import functools
+import MysqlHelper
 
 useragentlist = [
 
@@ -54,13 +55,35 @@ def write2File(item):
     with open("maoyan_pool.txt","a",encoding="utf-8") as f:
         f.write(json.dumps(item,ensure_ascii=False)+"\n")
 
+def write2SQL(item):
+    """
+    将返回的数据插入到数据库中
+    :param item:
+    :return:
+    """
+    dbhelper = MysqlHelper.DbHelper()
+    title = item['title']
+    actor = item['stars'].split("：")[1]
+    time = item['releasetime'].split("：")[1]
+    sql = "INSERT INTO newdatabase.maoyan(title,actor,time) VALUES(%s,%s,%s)"
+    params = (title, actor, time)
+    result = dbhelper.execute(sql, params)
+    if result == True:
+        print("插入成功")
+    else:
+        print("插入失败")
+
+
 def crawlPage(lock,num):
-    url = "http://maoyan.com/board/6?offset={}".format(num)
+    url = "http://maoyan.com/board/4?offset={}".format(num)
     html=get_one_page(url)
-    for item in  deal_one_page(html):
+    for item in deal_one_page(html):
+        print(item)
         lock.acquire()
         write2File(item)
+        write2SQL(item)
         lock.release()
+
 
 if __name__=="__main__":
     # for x in range(0,100,10):
@@ -71,7 +94,7 @@ if __name__=="__main__":
     # 使用函数包装器
     pcrawlPage=functools.partial(crawlPage,lock)
     pool=Pool()
-    pool.map(pcrawlPage,[x for x in range(0,50,10)]) #分配给进程池 任务序列
+    pool.map(pcrawlPage,[x for x in range(0,100,10)]) #分配给进程池 任务序列
     pool.close()
     pool.join()
 
