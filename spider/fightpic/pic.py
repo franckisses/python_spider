@@ -44,7 +44,7 @@ def parse_page(url):
         # 拿到表情包的名称
         alt = img.get("alt")
         # 将表情包的名称中的一些特殊符号用正则替换
-        alt = re.sub(r"[\？\?！!，,\.:~\d\\]","",alt)
+        alt = re.sub(r"[\\0-9x。\？\?！!，,\.:~]","",alt)
         # 将拿到的链接进行分割,并且拿到图片的后缀
         suffix = os.path.splitext(img_url)[-1]
         # 拼接表情包的名字
