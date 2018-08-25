@@ -11,7 +11,7 @@ import time
 from scrapy.http.response.html import HtmlResponse
 import random
 
-
+# 重写了简书的中间件 并添加了随机请求头
 class JsSpiderDownloadMiddleWare(object):
     def __init__(self):
         self.driver = webdriver.Chrome()
@@ -77,7 +77,7 @@ class JsSpiderDownloadMiddleWare(object):
             "Mozilla/5.0 (X11; U; Linux x86_64; zh-CN; rv:1.9.2.10) Gecko/20100922 Ubuntu/10.10 (maverick) Firefox/3.6.10",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
         ]
-
+    # 动态加载获取文章的标题
     def process_request(self,request,spider):
         request.headers['User-Agent'] = random.choice(self.user_agents)
         self.driver.get(request.url)

@@ -4,10 +4,15 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import pymysql
+import pymysql,json
 from twisted.enterprise import adbapi
 from pymysql import cursors
 
+# 将下载的简书的文件存储到json文件中
+class JianshuSpiderPipeline(object):
+    def process_item(self):
+        with open("jianshu.json","a",encoding="utf-8") as f:
+            f.write(json.dumps(dict(item), ensure_ascii=False) + "\n")
 
 # 将ajax加载的内容异步步插入数据库
 class JianshuPipeline(object):
