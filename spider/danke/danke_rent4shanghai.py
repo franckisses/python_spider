@@ -75,7 +75,7 @@ async def request(_):
             "house_type": house_type[x],
             "total_money": int(total_money[x].strip())  ,
         }
-        with open("dankeSH.json","a",encoding="utf-8") as  f:
+        with open("dankeSH.json","a",encoding="utf-8") as f:
             f.write(json.dumps(item,ensure_ascii=False)+"\n")
 
 def main():

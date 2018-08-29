@@ -26,9 +26,9 @@ useragentlist = [
 ]
 
 def parse_page(url):
-    header = {
-        "User-Agent":random.choice(useragentlist)
-    }
+    # header = {
+    #     "User-Agent":random.choice(useragentlist)
+    # }
     # 发送get请求
     response =requests.get(url,headers=header)
     # 将返回的页面进行转码

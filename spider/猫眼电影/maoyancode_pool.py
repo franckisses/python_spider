@@ -81,27 +81,38 @@ def crawlPage(lock,num):
     url = "http://maoyan.com/board/4?offset={}".format(num)
     html=get_one_page(url)
     for item in deal_one_page(html):
-        print(item)
+        # print(item)
         lock.acquire()
         write2File(item)
         write2SQL(item)
         lock.release()
+        
+def anaylysiscount():
+    dbhelper = MysqlHelper.DbHelper()
+    total = dbhelper.fetchCount("select count(*) from maoyan")
+    am = dbhelper.fetchCount("select count(*) from 'newdatabase'.'maoyan'where time like '%美国%'")
+    china = dbhelper.fetchCount("select count(*) from 'newdatabase'.'maoyan'where time like '%中国%'")
+    japan = dbhelper.fetchCount("select count(*) from 'newdatabase'.'maoyan'where time like '%日本%'")
+    print(total,am,japan,china)
+
+
 
 
 if __name__=="__main__":
+    anaylysiscount()
     # for x in range(0,100,10):
     #     crawlPage(x)
     # time.sleep(random.randint(1,5))
-    manager=Manager()
-    lock=manager.Lock()
+    # manager=Manager()
+    # lock=manager.Lock()
     # 使用函数包装器
-    pcrawlPage=functools.partial(crawlPage,lock)
-    pool=Pool()
-    pool.map(pcrawlPage,[x for x in range(0,100,10)]) #分配给进程池 任务序列
-    pool.close()
-    pool.join()
-
-    print("Finished")
+    # pcrawlPage=functools.partial(crawlPage,lock)
+    # pool=Pool()
+    # pool.map(pcrawlPage,[x for x in range(0,100,10)]) #分配给进程池 任务序列
+    # pool.close()
+    # pool.join()
+    #
+    # print("Finished")
 
 
 
